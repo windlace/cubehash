@@ -4,7 +4,7 @@
 
 namespace Cast\Crypto\CubeHash;
 
-// Cubehash 8/1-256
+// Cubehash 8/1-256 (CubeHash80+8/1+80-256)
 //
 // http://cubehash.cr.yp.to
 // http://en.wikipedia.org/wiki/CubeHash

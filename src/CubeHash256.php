@@ -6,6 +6,8 @@ namespace Cast\Crypto\CubeHash;
 
 // Cubehash 8/1-256 (CubeHash80+8/1+80-256)
 //
+// CubeHashi+r/b+f-h
+//
 // http://cubehash.cr.yp.to
 // http://en.wikipedia.org/wiki/CubeHash
 //
@@ -15,24 +17,48 @@ namespace Cast\Crypto\CubeHash;
 class CubeHash256
 {
     // Init vector was computed by 10r rounds as described in the specification
-    const IV = [
-         -2096419883,    658334063,   -679114902,  1246757400,
-         -1523021469,   -289996037,   1196718146,  1168084361,
-         -2027445816,  -1170162360,   -822837272,   625197683,
-          1543712850,  -1365258909,    759513533,  -424228083,
-        -13765010209,  -2824905881,  -9887154026, 19352563566,
-          5669379852, -31581549269,  21359466527, 10648459874,
-         -8561790247,   9779462261, -22434204802, -4124492433,
-         19608647852,   9541915967,   5144979599, -4355863926,
-    ];
+//     const IV = [
+//          -2096419883,    658334063,   -679114902,  1246757400,
+//          -1523021469,   -289996037,   1196718146,  1168084361,
+//          -2027445816,  -1170162360,   -822837272,   625197683,
+//           1543712850,  -1365258909,    759513533,  -424228083,
+//         -13765010209,  -2824905881,  -9887154026, 19352563566,
+//           5669379852, -31581549269,  21359466527, 10648459874,
+//          -8561790247,   9779462261, -22434204802, -4124492433,
+//          19608647852,   9541915967,   5144979599, -4355863926,
+//     ];
+    
+    public static function iv($r, $b, $h)
+    {
+        $initial_state = array_fill(0, 32, 0);
+        $initial_state[0] = $h/8;
+        $initial_state[1] = $b;
+        $initial_state[2] = $r;
+
+        // init state
+        $state = new \SplFixedArray(32);
+
+        for ($i = 0; $i < 32; $i += 1) {
+            $state[$i] = $initial_state[$i];
+        }
+
+        // finalize (10*r)
+        for ($i = 0; $i < 10; $i += 1) {
+            self::transform($state);
+        }
+
+        return $state;
+    }
 
     public static function hash($data)
     {
         // init state
         $state = new \SplFixedArray(32);
 
+        $iv = self::iv(8, 1, 256);
+        
         for ($i = 0; $i < 32; $i += 1) {
-            $state[$i] = self::IV[$i];
+            $state[$i] = $iv[$i];
         }
 
         // update with data

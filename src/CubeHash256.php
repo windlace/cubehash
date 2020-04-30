@@ -42,18 +42,23 @@ class CubeHash256
 
         // finalize (10*r)
         for ($i = 0; $i < 10; $i += 1) {
-            self::transform($state);
+            self::transform($r, $state);
         }
 
         return $state->toArray();
     }
 
-    public static function hash($data)
+    /**
+     * @param   integer $r  The number of rounds per block
+     * @param $data
+     * @return string
+     */
+    public static function hash($r, $data)
     {
         // init state
         $state = new \SplFixedArray(32);
 
-        $iv = self::iv(8, 1, 256);
+        $iv = self::iv($r, 1, 256);
         
         for ($i = 0; $i < 32; $i += 1) {
             $state[$i] = $iv[$i];
@@ -62,17 +67,16 @@ class CubeHash256
         // update with data
         $data .= mb_chr(128);
 
-
         for ($i = 0; $i < mb_strlen($data); $i += 1) {
             $state[0] ^= mb_ord(mb_substr($data, $i, 1));
-            $state = self::transform($state);
+            $state = self::transform($r, $state);
         }
 
         // finalize
         $state[31] ^= 1;
 
         for ($i = 0; $i < 10; $i += 1) {
-            self::transform($state);
+            self::transform($r, $state);
         }
 
         // Example for '' (empty string hash)
@@ -121,11 +125,16 @@ class CubeHash256
         return $s;
     }
 
-    protected static function transform($state)
+    /**
+     * @param   integer         $r      The number of rounds per block
+     * @param   \SplFixedArray  $state  The main context
+     * @return mixed
+     */
+    protected static function transform($r, $state)
     {
         $y = new \SplFixedArray(16);
 
-        for ($r = 0;$r < 8; $r += 1) {
+        for ($ri = 0;$ri < $r; $ri += 1) {
             for ($i = 0; $i < 16; $i += 1) $state[$i + 16] += $y[$i^8] = $state[$i];
             for ($i = 0; $i < 16; $i += 1) {
 

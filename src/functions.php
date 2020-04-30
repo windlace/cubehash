@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Cast\Crypto\CubeHash;
 
-function cubehash256($string)
+function cubehash256($r, $string)
 {
-    return CubeHash256::hash($string);
+    return CubeHash256::hash($r, $string);
 }
 
 // returns 32-bit representation on 64-bit integer

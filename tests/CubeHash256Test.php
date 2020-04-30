@@ -2,6 +2,7 @@
 
 namespace Cast\Crypto\CubeHash\Tests;
 
+use Cast\Crypto\CubeHash\CubeHash256;
 use function Cast\Crypto\CubeHash\cubehash256;
 use PHPUnit\Framework\TestCase;
 

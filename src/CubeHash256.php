@@ -47,7 +47,7 @@ class CubeHash256
             self::transform($state);
         }
 
-        return $state;
+        return $state->toArray();
     }
 
     public static function hash($data)

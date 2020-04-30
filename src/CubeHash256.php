@@ -15,19 +15,17 @@ namespace Cast\Crypto\CubeHash;
 // example-2: https://github.com/tearsofphoenix/cubehash/blob/master/index.js
 
 class CubeHash256
-{
-    // Init vector was computed by 10r rounds as described in the specification
-//     const IV = [
-//          -2096419883,    658334063,   -679114902,  1246757400,
-//          -1523021469,   -289996037,   1196718146,  1168084361,
-//          -2027445816,  -1170162360,   -822837272,   625197683,
-//           1543712850,  -1365258909,    759513533,  -424228083,
-//         -13765010209,  -2824905881,  -9887154026, 19352563566,
-//           5669379852, -31581549269,  21359466527, 10648459874,
-//          -8561790247,   9779462261, -22434204802, -4124492433,
-//          19608647852,   9541915967,   5144979599, -4355863926,
-//     ];
-    
+{   
+
+    /**
+     * Init vector computing by 10r rounds as described in the specification.
+     *
+     * @param   integer $r  The number of rounds per block
+     * @param   integer $b  The block size in bytes, defined for {1, 2, 3, ... 128}
+     * @param   integer $h  The size of the hash output in bits, defined for {8, 16, 24, 32, ... 512}
+     *
+     * @return array
+     */
     public static function iv($r, $b, $h)
     {
         $initial_state = array_fill(0, 32, 0);

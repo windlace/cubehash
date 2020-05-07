@@ -19,3 +19,7 @@ cubehash256('Hello'); // 8/1-256
 ```
 
 Based on https://github.com/RndPhrase/cubehash.js/blob/master/cubehash.js.
+
+Links:
+* http://cubehash.cr.yp.to
+* http://en.wikipedia.org/wiki/CubeHash

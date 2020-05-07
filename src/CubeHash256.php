@@ -50,25 +50,28 @@ class CubeHash256
 
     /**
      * @param   integer $r  The number of rounds per block
+     * @param $b
      * @param $data
      * @return string
      */
-    public static function hash($r, $data)
+    public static function hash($r, $b, $data)
     {
         // init state
         $state = new \SplFixedArray(32);
 
-        $iv = self::iv($r, 1, 256);
+        $iv = self::iv($r, $b, 256);
         
         for ($i = 0; $i < 32; $i += 1) {
             $state[$i] = $iv[$i];
         }
 
         // update with data
-        $data .= mb_chr(128);
+        $data .= chr(128);
 
-        for ($i = 0; $i < mb_strlen($data); $i += 1) {
-            $state[0] ^= mb_ord(mb_substr($data, $i, 1));
+        foreach (str_split($data, $b) as $block) {
+            $blockHex = unpack('H*', $block);
+            $blockDec = hexdec($blockHex[1]);
+            $state[0] ^= $blockDec;
             $state = self::transform($r, $state);
         }
 

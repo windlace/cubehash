@@ -24,9 +24,9 @@ class CubeHash256Test extends TestCase
             ],
             CubeHash256::iv(1, 1, 256)
         );
-        $this->assertEquals('80f72e07d04ddadb44a78823e0af2ea9f72ef3bf366fd773aa1fa33fc030e5cb', cubehash256(1, ''));
-        $this->assertEquals('f63041a946aa98bd47f3175e6009dcb2ccf597b2718617ba46d56f27ffe35d49', cubehash256(1, 'Hello'));
-        $this->assertEquals('217a4876f2b24cec489c9171f85d53395cc979156ea0254938c4c2c59dfdf8a4', cubehash256(1, 'The quick brown fox jumps over the lazy dog'));
+        $this->assertEquals('80f72e07d04ddadb44a78823e0af2ea9f72ef3bf366fd773aa1fa33fc030e5cb', cubehash256(1, 1, ''));
+        $this->assertEquals('f63041a946aa98bd47f3175e6009dcb2ccf597b2718617ba46d56f27ffe35d49', cubehash256(1, 1, 'Hello'));
+        $this->assertEquals('217a4876f2b24cec489c9171f85d53395cc979156ea0254938c4c2c59dfdf8a4', cubehash256(1, 1, 'The quick brown fox jumps over the lazy dog'));
 
         // CubeHash80+8/1+80-256
         $this->assertEquals(
@@ -42,9 +42,9 @@ class CubeHash256Test extends TestCase
             ],
             CubeHash256::iv(8, 1, 256)
         );
-        $this->assertEquals('38d1e8a22d7baac6fd5262d83de89cacf784a02caa866335299987722aeabc59', cubehash256(8, ''));
-        $this->assertEquals('692638db57760867326f851bd2376533f37b640bd47a0ddc607a9456b692f70f', cubehash256(8, 'Hello'));
-        $this->assertEquals('94e0c958d85cdfaf554919980f0f50b945b88ad08413e0762d6ff0219aff3e55', cubehash256(8, 'The quick brown fox jumps over the lazy dog'));
+        $this->assertEquals('38d1e8a22d7baac6fd5262d83de89cacf784a02caa866335299987722aeabc59', cubehash256(8, 1, ''));
+        $this->assertEquals('692638db57760867326f851bd2376533f37b640bd47a0ddc607a9456b692f70f', cubehash256(8, 1, 'Hello'));
+        $this->assertEquals('94e0c958d85cdfaf554919980f0f50b945b88ad08413e0762d6ff0219aff3e55', cubehash256(8, 1, 'The quick brown fox jumps over the lazy dog'));
 
         // CubeHash160+16/32+160-256
         $this->assertEquals(

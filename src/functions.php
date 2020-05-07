@@ -9,7 +9,7 @@ function cubehash256($r, $b, $string)
     return CubeHash256::hash($r, $b, $string);
 }
 
-// returns 32-bit representation on 64-bit integer
+// returns 32-bit representation of 64-bit integer
 function i32($value)
 {
     $value = ($value & 0xFFFFFFFF);

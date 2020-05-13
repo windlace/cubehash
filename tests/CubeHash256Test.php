@@ -60,11 +60,11 @@ class CubeHash256Test extends TestCase
             ],
             CubeHash256::iv(16, 32, 256)
         );
-        // multybyte-blocks for an empty string works propertly.
+        // multibyte-blocks for an empty string works propertly.
         $this->assertEquals('44c6de3ac6c73c391bf0906cb7482600ec06b216c7c54a2a8688a6a42676577d', cubehash256(16, 32, ''));
-        // multybyte-blocks are not realised yet.
+        // multibyte-blocks
         $this->assertEquals('e712139e3b892f2f5fe52d0f30d78a0cb16b51b217da0e4acb103dd0856f2db0', cubehash256(16, 32, 'Hello'));
-        // multybyte-blocks are not realised yet.
+        // multibyte-blocks
         $this->assertEquals('5151e251e348cbbfee46538651c06b138b10eeb71cf6ea6054d7ca5fec82eb79', cubehash256(16, 32, 'The quick brown fox jumps over the lazy dog'));
     }
 }

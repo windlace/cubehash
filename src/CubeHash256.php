@@ -47,6 +47,34 @@ class CubeHash256
 
         return $state->toArray();
     }
+    
+    /**
+     * @param string $value Hex
+     * @return string
+     */
+    public static function swapEndianness($value)
+    {
+        return implode('', array_reverse(str_split($value, 2)));
+    }
+
+    /**
+     * @param string $value Binary array
+     * @return false|string
+     */
+    public static function swapEndiannessBin($value)
+    {
+        return hex2bin(self::swapEndianness(bin2hex($value)));
+    }
+
+    public static function padBlock($input, $blockSizeBytes)
+    {
+        $blockSize = $blockSizeBytes * 2;
+        $input = bin2hex($input);
+//    if (strlen($input) > $blockSize) throw new \InvalidArgumentException("Input data should not be more than {$blockSizeBytes} bytes");
+        $input = str_repeat('0', $blockSize - ((strlen($input) % $blockSize) ?: $blockSize)) . $input;
+        $input = !strlen($input) ? str_repeat('0', $blockSize) : $input;
+        return hex2bin($input);
+    }
 
     /**
      * @param   integer $r  The number of rounds per block
@@ -67,11 +95,19 @@ class CubeHash256
 
         // update with data
         $data .= chr(128);
+        $data = self::swapEndiannessBin($data);
+        $data = self::padBlock($data, $b);
+        $data = self::swapEndiannessBin($data);
 
-        foreach (str_split($data, $b) as $block) {
-            $blockHex = unpack('H*', $block);
-            $blockDec = hexdec($blockHex[1]);
-            $state[0] ^= $blockDec;
+        for ($j = 0; $j < strlen($data); $j += $b) {
+            $block = substr($data, $j, $b);
+            $block = bin2hex($block);
+            $n = 0;
+            for ($i = 0; $i < strlen($block); $i += 8) {
+                $byte = substr($block, $i, 8);
+                $byte = self::swapEndianness($byte);
+                $state[$n++] ^= hexdec($byte);
+            }
             $state = self::transform($r, $state);
         }
 
@@ -218,8 +254,7 @@ class CubeHash256
         for ($i=0; $i < 4; $i++){
             $hex .= str_pad( dechex(ord($packed[$i])) , 2, '0', STR_PAD_LEFT);
         }
-        $tmp = str_split($hex, 2);
-        $out = implode('', ($reverseEndianness ? array_reverse($tmp) : $tmp));
-        return $out;
+        
+        return $reverseEndianness ? self::swapEndianness($hex) : $hex;
     }
 }

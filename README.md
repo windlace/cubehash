@@ -13,7 +13,7 @@ composer require cast/cubehash
 
 use function Cast\Crypto\CubeHash\cubehash256;
 
-cubehash256('Hello'); // 8/1-256
+cubehash256(8, 1, 'Hello'); // 8/1-256
 // 692638db57760867326f851bd2376533f37b640bd47a0ddc607a9456b692f70f
 
 ```

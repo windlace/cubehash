@@ -2,11 +2,12 @@
 
 namespace Cast\Crypto\CubeHash\Tests;
 
-use Cast\Crypto\CubeHash\CubeHash256;
+use Cast\Crypto\CubeHash\CubeHash;
 use function Cast\Crypto\CubeHash\cubehash256;
+use function Cast\Crypto\CubeHash\cubehash512;
 use PHPUnit\Framework\TestCase;
 
-class CubeHash256Test extends TestCase
+class CubeHashTest extends TestCase
 {
     public function test_cubehash256()
     {
@@ -22,7 +23,7 @@ class CubeHash256Test extends TestCase
                   -272471494,   5329758627,   2868717903,   710720199,
                   -709654222,   2807896093,   2249717683,  2710321235,
             ],
-            CubeHash256::iv(1, 1, 256)
+            CubeHash::iv(1, 1, 256)
         );
         $this->assertEquals('80f72e07d04ddadb44a78823e0af2ea9f72ef3bf366fd773aa1fa33fc030e5cb', cubehash256(1, 1, ''));
         $this->assertEquals('f63041a946aa98bd47f3175e6009dcb2ccf597b2718617ba46d56f27ffe35d49', cubehash256(1, 1, 'Hello'));
@@ -40,7 +41,7 @@ class CubeHash256Test extends TestCase
                  -8561790247,   9779462261, -22434204802, -4124492433,
                  19608647852,   9541915967,   5144979599, -4355863926,
             ],
-            CubeHash256::iv(8, 1, 256)
+            CubeHash::iv(8, 1, 256)
         );
         $this->assertEquals('38d1e8a22d7baac6fd5262d83de89cacf784a02caa866335299987722aeabc59', cubehash256(8, 1, ''));
         $this->assertEquals('692638db57760867326f851bd2376533f37b640bd47a0ddc607a9456b692f70f', cubehash256(8, 1, 'Hello'));
@@ -58,13 +59,40 @@ class CubeHash256Test extends TestCase
                   5015516590, -27409035680, -45243252771,  58068387621,
                 -29703972117,   5548452566, -40318076753, -30769206262,
             ],
-            CubeHash256::iv(16, 32, 256)
+            CubeHash::iv(16, 32, 256)
         );
-        // multibyte-blocks for an empty string works propertly.
         $this->assertEquals('44c6de3ac6c73c391bf0906cb7482600ec06b216c7c54a2a8688a6a42676577d', cubehash256(16, 32, ''));
-        // multibyte-blocks
         $this->assertEquals('e712139e3b892f2f5fe52d0f30d78a0cb16b51b217da0e4acb103dd0856f2db0', cubehash256(16, 32, 'Hello'));
-        // multibyte-blocks
         $this->assertEquals('5151e251e348cbbfee46538651c06b138b10eeb71cf6ea6054d7ca5fec82eb79', cubehash256(16, 32, 'The quick brown fox jumps over the lazy dog'));
+    }
+
+    public function test_cubehash512()
+    {
+        // CubeHash160+16/32+160-512
+        $this->assertEquals(
+            [
+                   719989345,   1358206164,   760449931,  1097324606,
+                  1072571155,   -956182644,  -868641138,  1353471637,
+                  1296222087,  -1505253197, -1748038673, -2107947721,
+                  -285711150,   -232746812,  -790246093, -1573318226,
+                 30011529433,  17524843653, 47697722351, -5532007118,
+                -75525562023,  22279452700, -1845855948,  8820285097,
+                 16481290795,  -1515778443, -5607381930, -5427862154,
+                -25348159241, -34769167631, 14891209286, 20740717380,
+            ],
+            CubeHash::iv(16, 32, 512)
+        );
+        $this->assertEquals(
+            '4a1d00bbcfcb5a9562fb981e7f7db3350fe2658639d948b9d57452c22328bb32f468b072208450bad5ee178271408be0b16e5633ac8a1e3cf9864cfbfc8e043a',
+            cubehash512(16, 32, '')
+        );
+        $this->assertEquals(
+            'dcc0503aae279a3c8c95fa1181d37c418783204e2e3048a081392fd61bace883a1f7c4c96b16b4060c42104f1ce45a622f1a9abaeb994beb107fed53a78f588c',
+            cubehash512(16, 32, 'Hello')
+        );
+        $this->assertEquals(
+            'bdba44a28cd16b774bdf3c9511def1a2baf39d4ef98b92c27cf5e37beb8990b7cdb6575dae1a548330780810618b8a5c351c1368904db7ebdf8857d596083a86',
+            cubehash512(16, 32, 'The quick brown fox jumps over the lazy dog')
+        );
     }
 }

@@ -14,7 +14,7 @@ namespace Cast\Crypto\CubeHash;
 // example-1: https://github.com/RndPhrase/cubehash.js/blob/master/cubehash.js
 // example-2: https://github.com/tearsofphoenix/cubehash/blob/master/index.js
 
-class CubeHash256
+class CubeHash
 {   
 
     /**
@@ -77,17 +77,18 @@ class CubeHash256
     }
 
     /**
-     * @param   integer $r  The number of rounds per block
-     * @param $b
+     * @param integer $r The number of rounds per block
+     * @param integer $b The block size in bytes, defined for {1, 2, 3, ... 128}
+     * @param integer $h The size of the hash output in bits, defined for {8, 16, 24, 32, ... 512}
      * @param $data
      * @return string
      */
-    public static function hash($r, $b, $data)
+    public static function hash($r, $b, $h, $data)
     {
         // init state
         $state = new \SplFixedArray(32);
 
-        $iv = self::iv($r, $b, 256);
+        $iv = self::iv($r, $b, $h);
         
         for ($i = 0; $i < 32; $i += 1) {
             $state[$i] = $iv[$i];
@@ -157,7 +158,7 @@ class CubeHash256
 
         // convert to hex
         $s = '';
-        for ($i = 0; $i < 8; $i += 1) {
+        for ($i = 0; $i < $h/8/4; $i += 1) {
             $s .= self::signed2hex($state[$i], false);
         }
 

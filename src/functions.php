@@ -6,7 +6,12 @@ namespace Cast\Crypto\CubeHash;
 
 function cubehash256($r, $b, $string)
 {
-    return CubeHash256::hash($r, $b, $string);
+    return CubeHash::hash($r, $b, 256, $string);
+}
+
+function cubehash512($r, $b, $string)
+{
+    return CubeHash::hash($r, $b, 512, $string);
 }
 
 // returns 32-bit representation of 64-bit integer

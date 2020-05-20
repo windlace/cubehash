@@ -68,6 +68,34 @@ class CubeHashTest extends TestCase
 
     public function test_cubehash512()
     {
+        // CubeHash80+8/1+80-512
+        $this->assertEquals(
+            [
+                  1771631453,    -83283769,   1620347152,  -433711601,
+                   906460403,  -1249178356,   1473190205,   859957176,
+                 -1556840357,    545913327,    838845460,   720320592,
+                   -32368583,   -381639598,   2102563746,  1883621906,
+                -10412881554,   6471774260, -10291731382,  2479046363,
+                 -8241550972,   9840352208,  24633482738,  5671924652,
+                 18969519388, -28488698309,  16604957416, 29977988879,
+                 16460907259,  -9979419578,  -4139768411, -3730686628,
+            ],
+            CubeHash::iv(8, 1, 512)
+        );
+        $this->assertEquals(
+            '90bc3f2948f7374065a811f1e47a208a53b1a2f3be1c0072759ed49c9c6c7f28f26eb30d5b0658c563077d599da23f97df0c2c0ac6cce734ffe87b2e76ff7294',
+            cubehash512(8, 1, '')
+        );
+        $this->assertEquals(
+            '7ce309a25e2e1603ca0fc369267b4d43f0b1b744ac45d6213ca08e75675664448e2f62fdbf7bbd637ce40fc293286d75b9d09e8dda31bd029113e02ecccfd39b',
+            cubehash512(8, 1, 'Hello')
+        );
+        $this->assertEquals(
+            'ca942b088ed9103726af1fa87b4deb59e50cf3b5c6dcfbcebf5bba22fb39a6be9936c87bfdd7c52fc5e71700993958fa4e7b5e6e2a3672122475c40f9ec816ba',
+            cubehash512(8, 1, 'The quick brown fox jumps over the lazy dog')
+        );
+
+
         // CubeHash160+16/32+160-512
         $this->assertEquals(
             [

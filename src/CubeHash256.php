@@ -94,7 +94,7 @@ class CubeHash256
         }
 
         // update with data
-        $data .= chr(128);
+        $data .= hex2bin('80');
         $data = self::swapEndiannessBin($data);
         $data = self::padBlock($data, $b);
         $data = self::swapEndiannessBin($data);
